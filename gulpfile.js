@@ -22,7 +22,7 @@ gulp.task('sass', function(done) {
       keepSpecialComments: 0
     }))
     .pipe(rename({ extname: '.min.css' }))
-    .pipe(gulp.dest('./www/css/'))
+    .pipe(gulp.dest('./www/assets/css/'))
     .on('end', done);
 });
 
