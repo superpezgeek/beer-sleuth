@@ -8,16 +8,36 @@ var rename = require('gulp-rename');
 var sh = require('shelljs');
 
 var paths = {
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss'],
+  angular: {
+    app: ['./assets/app/app.js'],
+    controllers: ['./assets/app/controllers/**/*.js'],
+  }
 };
 
-gulp.task('default', ['sass']);
+gulp.task('default', [
+  'sass',
+  'angular-app',
+  'angular-controllers'
+]);
+
+gulp.task('angular-app', function() {
+  gulp.src(paths.angular.app)
+    .pipe(gulp.dest('./www/assets/js/app/'));
+});
+
+gulp.task('angular-controllers', function() {
+  gulp.src(paths.angular.controllers)
+    .pipe(concat('controllers.js'))
+    .pipe(gulp.dest('./www/assets/js/app/'));
+});
+
 
 gulp.task('sass', function(done) {
-  gulp.src('./scss/ionic.app.scss')
+  gulp.src('./assets/scss/ionic.app.scss')
     .pipe(sass())
     .on('error', sass.logError)
-    .pipe(gulp.dest('./www/css/'))
+    .pipe(gulp.dest('./www/assets/css/'))
     .pipe(minifyCss({
       keepSpecialComments: 0
     }))
@@ -28,6 +48,8 @@ gulp.task('sass', function(done) {
 
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.angular.app, ['angular-app']);
+  gulp.watch(paths.angular.controllers, ['angular-controllers']);
 });
 
 gulp.task('install', ['git-check'], function() {
