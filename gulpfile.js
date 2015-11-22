@@ -8,7 +8,7 @@ var rename = require('gulp-rename');
 var sh = require('shelljs');
 
 var paths = {
-  sass: ['./scss/**/*.scss'],
+  sass: ['./assets/scss/**/*.scss'],
   angular: {
     app: ['./assets/app/app.js'],
     controllers: ['./assets/app/controllers/**/*.js'],
@@ -44,9 +44,10 @@ gulp.task('angular-services', function() {
 });
 
 gulp.task('sass', function(done) {
-  gulp.src('./assets/scss/ionic.app.scss')
-    .pipe(sass())
-    .on('error', sass.logError)
+  gulp.src(paths.sass)
+    .pipe(sass({
+      errLogToConsole: true
+    }))
     .pipe(gulp.dest('./www/assets/css/'))
     .pipe(minifyCss({
       keepSpecialComments: 0

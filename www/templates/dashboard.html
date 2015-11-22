@@ -21,13 +21,15 @@
     </div>
   </div>
 
+  <div id="map" data-tap-disabled="true"></div>
+
   <div class="list list">
     <div 
       class="item"
       ng-if="dashCtrl.bars.length"
       ng-repeat="bar in dashCtrl.bars">
       <h2>{{bar.name}}</h2>
-      <p>{{bar.links.google.vicinity}}</p>
+      <p>{{bar.vicinity}}</p>
     </div>
     <div class="item"
       ng-if="dashCtrl.bars.length === 0">
