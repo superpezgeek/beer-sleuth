@@ -9,7 +9,7 @@
 
           $cordovaGeolocation
           .getCurrentPosition({
-            timeout: 15000,
+            timeout: 35000,
             maximumAge: Infinity,
             enableHighAccuracy: false
           })

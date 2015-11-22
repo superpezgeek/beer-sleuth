@@ -7,7 +7,8 @@
 
     function search(term) {
       if (!term) {
-        vm.results = [];
+        vm.results = null;
+        vm.bars = null;
 
         return;
       }
@@ -19,9 +20,10 @@
 
     function selectBeer(beer) {
       vm.searchTerm = beer.name;
-      vm.results = [];
+      vm.results = null;
+      vm.bars = null;
 
-      BeerMdl.getBars(beer).then(function(res) {
+      BeerMdl.searchBars(beer).then(function(res) {
         vm.bars = res;
       });
     }

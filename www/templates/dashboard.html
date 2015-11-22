@@ -19,12 +19,19 @@
       <h2>{{beer.name}}</h2>
       <p>{{beer.brewery}}</p>
     </div>
+  </div>
 
+  <div class="list list">
     <div 
       class="item"
-      ng-if="dashCtrl.beerLocations.length"
+      ng-if="dashCtrl.bars.length"
       ng-repeat="bar in dashCtrl.bars">
-      {{bar.name}}
+      <h2>{{bar.name}}</h2>
+      <p>{{bar.links.google.vicinity}}</p>
+    </div>
+    <div class="item"
+      ng-if="dashCtrl.bars.length === 0">
+      <p>No results found.</p>
     </div>
   </div>
   </ion-content>
