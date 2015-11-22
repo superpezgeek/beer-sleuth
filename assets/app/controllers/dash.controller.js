@@ -1,5 +1,5 @@
 (function() {
-  function DashCtrl(BeerMdl, LocationSvc) {
+  function DashCtrl(BeerMdl, LocationSvc, $timeout) {
     var vm = this;
 
     vm.search = search;
@@ -42,14 +42,15 @@
         BeerMdl.searchBars(beer, location).then(function(res) {
           vm.bars = res;
 
-          _displayMap(location);
+          $timeout(function(){_displayMap(location);}, 50);
         });
       }
     }
 
     function _displayMap(location) {
+      _initMap();
+
       if (!map) {
-        _initMap();
         __mapStuff();
       } else {
         google.maps.event.addListenerOnce(map, 'idle', function() {
@@ -103,7 +104,7 @@
     }
   }
 
-  DashCtrl.$inject = [ 'BeerMdl', 'LocationSvc' ];
+  DashCtrl.$inject = [ 'BeerMdl', 'LocationSvc', '$timeout' ];
 
   angular
     .module('beersleuth.controllers')
