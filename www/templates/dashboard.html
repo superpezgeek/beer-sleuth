@@ -1,0 +1,32 @@
+<ion-view view-title="Bear Sleuth">
+  <ion-content>
+  <div class="list list-inset">
+    <label class="item item-input">
+      <i class="icon ion-search placeholder-icon"></i>
+      <input 
+        type="text" 
+        placeholder="Search" 
+        ng-model="dashCtrl.searchTerm"
+        ng-model-options="{ debounce: 250 }"
+        ng-change="dashCtrl.search(dashCtrl.searchTerm)">
+    </label>
+
+    <div 
+      class="item"
+      ng-if="dashCtrl.results.length"
+      ng-click="dashCtrl.selectBeer(beer)"
+      ng-repeat="beer in dashCtrl.results">
+      <h2>{{beer.name}}</h2>
+      <p>{{beer.brewery}}</p>
+    </div>
+
+    <div 
+      class="item"
+      ng-if="dashCtrl.beerLocations.length"
+      ng-repeat="bar in dashCtrl.bars">
+      {{bar.name}}
+    </div>
+  </div>
+  </ion-content>
+</ion-view>
+

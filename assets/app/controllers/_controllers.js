@@ -1,4 +1,4 @@
 (function() {
   angular
-    .module('beersleuth.controllers', []);
+    .module('beersleuth.controllers', ['beersleuth.services']);
 })();

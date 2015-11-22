@@ -12,13 +12,18 @@ var paths = {
   angular: {
     app: ['./assets/app/app.js'],
     controllers: ['./assets/app/controllers/**/*.js'],
+    services: [
+      './assets/app/services/**/*.js',
+      './assets/app/models/**/*.js'
+    ],
   }
 };
 
 gulp.task('default', [
   'sass',
   'angular-app',
-  'angular-controllers'
+  'angular-controllers',
+  'angular-services'
 ]);
 
 gulp.task('angular-app', function() {
@@ -32,6 +37,11 @@ gulp.task('angular-controllers', function() {
     .pipe(gulp.dest('./www/assets/js/app/'));
 });
 
+gulp.task('angular-services', function() {
+  gulp.src(paths.angular.services)
+    .pipe(concat('services.js'))
+    .pipe(gulp.dest('./www/assets/js/app/'));
+});
 
 gulp.task('sass', function(done) {
   gulp.src('./assets/scss/ionic.app.scss')
@@ -50,6 +60,7 @@ gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.angular.app, ['angular-app']);
   gulp.watch(paths.angular.controllers, ['angular-controllers']);
+  gulp.watch(paths.angular.controllers, ['angular-services']);
 });
 
 gulp.task('install', ['git-check'], function() {

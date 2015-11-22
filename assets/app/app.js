@@ -4,7 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('beersleuth', ['ionic', 'beersleuth.controllers'])
+angular.module('beersleuth',
+    ['ionic', 'beersleuth.controllers', 'beersleuth.services', 'ngCordova', 'ngResource'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -32,6 +33,16 @@ angular.module('beersleuth', ['ionic', 'beersleuth.controllers'])
     controllerAs: 'AppCtrl as appCtrl'
   })
 
+  .state('app.dashboard', {
+    url: '/dashboard',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/dashboard.html',
+        controller: 'DashCtrl as dashCtrl'
+      }
+    }
+  })
+
   .state('app.search', {
     url: '/search',
     views: {
@@ -51,5 +62,9 @@ angular.module('beersleuth', ['ionic', 'beersleuth.controllers'])
     });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/dashboard');
+})
+.run(function($http) {
+  $http.defaults.headers.common.Accept = 'application/json';
+  $http.defaults.headers.common['Content-Type'] = 'application/json';
 });
