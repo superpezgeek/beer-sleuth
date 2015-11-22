@@ -8,8 +8,6 @@
     var location;
     var map;
 
-    google.maps.event.addDomListener(window, 'load', _initMap);
-
     function search(term) {
       if (!term) {
         vm.results = null;
@@ -33,10 +31,14 @@
       if (location && Object.keys(location).length) {
         return __searchBars();
       } else {
-        return LocationSvc.get().then(__searchBars);
+        return LocationSvc.get().then(function(res) {
+          location = res;
+
+          __searchBars(res);
+        });
       }
 
-      function __searchBars(location) {
+      function __searchBars() {
         BeerMdl.searchBars(beer, location).then(function(res) {
           vm.bars = res;
 
@@ -46,31 +48,47 @@
     }
 
     function _displayMap(location) {
-      if (!map) { return; }
+      if (!map) {
+        _initMap();
+        __mapStuff();
+      } else {
+        google.maps.event.addListenerOnce(map, 'idle', function() {
+          __mapStuff();
+           google.maps.event.trigger(map, 'resize');
+        });
+      }
 
-      var markers = [];
-      var myLatlng = new google.maps.LatLng(location.latitude,location.longitude);
-      var bounds = new google.maps.LatLngBounds();
+      function __mapStuff() {
+        var marker;
+        var myLatlng = new google.maps.LatLng(location.latitude,location.longitude);
+        var bounds = new google.maps.LatLngBounds();
 
-      angular.forEach(vm.bars, function(bar) {
-        var barLatLng = new google.maps.LatLng(bar.location[0],bar.location[1]);
-        bounds.extend(barLatLng);
+        bounds.extend(myLatlng);
 
-        var marker = new google.maps.Marker({
-          position: barLatLng,
+        marker = new google.maps.Marker({
+          position: myLatlng,
           map: map,
-          title: bar.name
+          title: 'You are here'
         });
 
-        google.maps.event.addListener(marker, 'click', (function(marker) {
-          return function() {
-            infoWindow.setContent(bar.name);
-            infoWindow.open(map, marker);
-          };
-        })(marker));
+        angular.forEach(vm.bars, function(bar) {
+          var barLatLng = new google.maps.LatLng(bar.location[0],bar.location[1]);
+          bounds.extend(barLatLng);
+
+          marker = new google.maps.Marker({
+            position: barLatLng,
+            map: map,
+            title: bar.name,
+            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+          });
+
+          google.maps.event.addListener(marker, 'click', (function(marker) {
+            return function() {};
+          })(marker));
+        });
 
         map.fitBounds(bounds);
-      });
+      }
     }
 
     function _initMap() {
@@ -91,4 +109,3 @@
     .module('beersleuth.controllers')
     .controller('DashCtrl', DashCtrl);
 })();
-

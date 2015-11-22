@@ -1,3 +1,7 @@
 #map {
-  height: 200px;
+  height: 0;
+
+  &.show-map {
+    height: 200px;
+  }
 }
